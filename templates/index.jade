@@ -8,7 +8,10 @@ block content
         p.date
           span= moment.utc(article.date).format('DD. MMMM YYYY')
         h2
-          a(href=article.url)= article.title
+          if article.title === 'How quadtrees work'
+            a(href='http://jimkang.com/quadtreevis')= article.title
+          else
+            a(href=article.url)= article.title
       section.content
         | !{ typogr(article.intro).typogrify() }
         if article.hasMore

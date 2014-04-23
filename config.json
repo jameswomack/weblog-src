@@ -22,5 +22,8 @@
   },
   "paginator": {
     "perPage": 3
-  }
+  },
+  "ignore": [
+    "*DS_Store"
+  ]
 }
