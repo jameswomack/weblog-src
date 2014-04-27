@@ -1,9 +1,9 @@
 {
   "locals": {
     "url": "http://localhost:8080",
-    "name": "Non-Stop Blog Shop",
+    "name": "jimkang.com",
     "owner": "Jim Kang",
-    "description": "Blogging up some blogs, just for you."
+    "description": "It's dot com."
   },
   "plugins": [
     "./plugins/paginator.coffee"
