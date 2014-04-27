@@ -13,7 +13,7 @@ We use computers in part because they're good at doing the same thing over and o
 
 Amazing, but what is the by-product of all of this multiplication? Lots and lots of <a href="http://en.wikipedia.org/wiki/Product_(Mathematics)">products</a>, which, __you__, the programmer, must check for correctness.
 
-Although it's likely that you are a multiplication developer doing big things in the multiplication space, for the sake of this post, let's generalize this to non-multiplication programming. The program's output need not be multiplication products; it could be say, strings or "objects."
+Although it's likely that you are a multiplication developer doing big things in the multiplication space, for the sake of this post, let's generalize this to non-multiplication programming. The program's output need not be multiplication products; it could be, say, strings or objects.
 
     var enormousArray = getBigData(ids);
 
