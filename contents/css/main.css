@@ -4,10 +4,10 @@ h1, h2, h3, h4, h5, h6, p, body, a, img, ul, ol, blockquote, pre {
 }
 
 body {
-  font-family: 'Lora', serif;
-  font-size: 21px;
+  font-family: adobe-garamond-pro, garamond, serif;
+  font-size: 30px;
   line-height: 1.52;
-  background-color: #f8f8f8;
+  background-color: #fcfcfc;
   text-rendering: optimizeLegibility;
 }
 
@@ -17,7 +17,7 @@ body {
 }
 
 body, a {
-  color: #171717;
+  color: #444;
 }
 
 a {
@@ -32,6 +32,7 @@ a:link {
   text-decoration: none;
   font-weight: bold;
   line-height: 32px;
+  color: hsl(0, 51%, 58%);
 }
 
 a:visited {
@@ -213,7 +214,7 @@ footer .copy, footer .copy a {
 }
 
 .article header .date span {
-  background-color: #f8f8f8;
+  background-color: #fcfcfc;
   padding: 0 0.7em;
 }
 
@@ -230,6 +231,11 @@ footer .copy, footer .copy a {
 .article .content img {
   display: block;
   width: 100%;
+}
+
+.article .content img.do-not-resize {
+  width: auto;
+  height: auto;
 }
 
 .more, .date {
@@ -384,14 +390,17 @@ code.lang-markdown .bullet {
   color: #8959a8;
 }
 
+ol.alpha { 
+  list-style-type: upper-alpha; 
+}
+
 /* media queries */
 
 @media (min-width: 1600px) {
-  body { font-size: 26px; }
 }
 
 @media (max-width: 900px) {
-  body { font-size: 18px; }
+  body { font-size: 24px; }
 }
 
 @media (max-width: 690px) {
