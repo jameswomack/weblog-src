@@ -26,4 +26,20 @@ I think there's a lesson here about streaming as well. Streams are about process
 
 In the situation I set up &mdash; piping a huge text file to a parser stream, then piping the parsed tokens to a renderer &mdash; streams of text were transformed into streams of token objects which were then transformed into SVG elements. But those SVG elements did not "pass through." They piled up in the DOM, eating up memory.
 
+<svg width="800" height="600">
+  <g id="chunk-layer">
+  </g>
+  <g>
+    <rect id="reader" x="40" y="180" width="120" height="90" fill="red"></rect>
+    <rect id="parser" x="275" y="50" width="100" height="100" fill="green"></rect>
+    <rect id="renderer" x="525" y="225" width="100" height="100" fill="blue"></rect>
+  </g>
+  <g id="block-layer">
+  </g>
+</svg>
+
 Not every object benefits from being hit with a hammer, and some situations benefit less than others from having a streaming pattern applied.
+
+<script type="text/javascript" src="d3.v3.min.js"></script>
+<script type="text/javascript" src="gravitybox.js"></script>
+<script type="text/javascript" src="flowcontroller.js"></script>
