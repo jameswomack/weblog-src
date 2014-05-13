@@ -187,7 +187,7 @@ function flowController(opts) {
       function addWord() {
         feedWordIntoFlow(randomId(10));
         wordsAdded += 1;
-        if (wordsAdded > 5) {
+        if (wordsAdded > 2) {
           clearInterval(wordIntervalKey);
         }
       }
@@ -201,7 +201,7 @@ function flowController(opts) {
     }
 
     addWords();
-    var groupIntervalKey = setInterval(addWords, 30000);
+    var groupIntervalKey = setInterval(addWords, 20000);
   }
 
   var internetResponses = 0;
