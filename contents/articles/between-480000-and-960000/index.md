@@ -5,6 +5,12 @@ date: 2014-05-10
 template: article.jade
 ---
 
+<style>
+  .tagbox {
+    font-size: 32px;
+  }
+</style>
+
 I've been working on a [simple streaming parser](https://github.com/jimkang/roguemap-parse-stream) for plain text maps. While writing the browser example (I originally wrote it for Node), I began to wonder if I could use the [Power of Streaming](https://github.com/substack/stream-handbook) to use it to render some really huge maps.
 
 <span class="more"></span>

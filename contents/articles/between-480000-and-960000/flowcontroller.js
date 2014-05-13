@@ -28,7 +28,7 @@ function flowController(opts) {
     width: 800,
     height: 600,
     r: 18,
-    nodeClass: 'node',
+    nodeClass: 'tagbox',
     nodeElementName: 'text',
     xAttr: 'x',
     yAttr: 'y',
@@ -115,7 +115,7 @@ function flowController(opts) {
           // r: 30,
           width: 30,
           height: 30,
-          fill: 'purple'
+          fill: '#666'
         }
       }
     ]);
@@ -201,7 +201,7 @@ function flowController(opts) {
     }
 
     addWords();
-    var groupIntervalKey = setInterval(addWords, 15000);
+    var groupIntervalKey = setInterval(addWords, 30000);
   }
 
   var internetResponses = 0;
@@ -214,7 +214,7 @@ function flowController(opts) {
   }
 
   renderInternetResponse();
-  var internetKey = setInterval(renderInternetResponse, 30000);
+  var internetKey = setInterval(renderInternetResponse, 60000);
   
   return {
   };
