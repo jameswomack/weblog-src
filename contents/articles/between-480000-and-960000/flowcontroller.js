@@ -7,14 +7,34 @@ function flowController(opts) {
     opts.delay = 500;
   }
 
+  function pickFromArrayAtRandom(array) {
+    return array[~~(Math.random() * array.length)];
+  }
+
+  var idChars = 
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'.split('');
+
+  // Creates a string of random characters of the length specified.
+  function randomId(len) {
+    var id = '';
+    for (var i = 0; i < len; ++i) {
+      id += pickFromArrayAtRandom(idChars);
+    }
+    return id;
+  }
+
   var gravitybox = createGravityBox({
     root: d3.select('#block-layer'),
     width: 800,
     height: 600,
+    r: 18,
     nodeClass: 'node',
-    nodeElementName: 'circle',
-    xAttr: 'cx',
-    yAttr: 'cy'      
+    nodeElementName: 'text',
+    xAttr: 'x',
+    yAttr: 'y',
+    processSelection: function setText() {
+      d3.select(this).text('<rect />');
+    }
   });
 
   function moveThing(moveOpts) {
@@ -48,7 +68,7 @@ function flowController(opts) {
     moveThing({
       thing: word, 
       dest: parserCoords,
-      duration: 1800, 
+      duration: 1000, 
       done: done
     });
   }
@@ -80,32 +100,26 @@ function flowController(opts) {
     moveThing({
       thing: token, 
       dest: rendererCoords, 
-      duration: 1800,
+      duration: 1000,
       delay: tokenNumber * opts.delay,
       done: this.done
     });
   }
 
   function blockForToken(token) {
-    // return opts.blockLayer.append('rect').attr({
-    //   x: token.attr('x'),
-    //   y: token.attr('y'),
-    //   width: 30,
-    //   height: 30,
-    //   fill: 'purple'
-    // });
-    gravitybox.render([
+    gravitybox.add([
       {
-        x: token.attr('x'),
+        x: +token.attr('x') + token.attr('width')/2,
         y: token.attr('y'),
         attrs: {
-          r: 30,
+          // r: 30,
           width: 30,
           height: 30,
           fill: 'purple'
         }
       }
     ]);
+    gravitybox.render();
   }
 
   function tokenToBlock(token) {
@@ -115,44 +129,92 @@ function flowController(opts) {
     return block;
   }
 
-  function init() {
-    var readerX = +readerBox.attr('x');
-    var middleOfReaderY = +readerBox.attr('y') + readerBox.attr('height')/2;
+  function dropTextIntoBox(box, text, done) {
+    var boxX = +box.attr('x');
 
-    var smidgeo = opts.chunkLayer.append('text')
-      .text('smidgeo')
+    var rendition = opts.chunkLayer.append('text')      
+      .attr({
+        x: boxX + readerBox.attr('x')/2,
+        y: 0
+      });
+
+    var words = text.split(' ');
+    words.forEach(function appendSpan(word) {
+      rendition.append('tspan').text(word).attr({
+        x: boxX + readerBox.attr('x')/2,
+        dy: '1em'
+      });      
+    });
+
+    moveThing({
+      thing: rendition,
+      dest: [boxX, +box.attr('y') + box.attr('height')/3],
+      duration: 1000,
+      done: done
+    });
+  }
+
+  function putWordInBox(box, text) {
+    var readerX = +box.attr('x');
+    var middleOfReaderY = +box.attr('y') + box.attr('height')/2;
+
+    return opts.chunkLayer.append('text')
+      .text(text)
       .attr({
         x: readerX,
         y: middleOfReaderY,
         dy: '1em'
       });
-
-    var xhrRendition = opts.chunkLayer.append('text')      
-      .attr({
-        x: readerX,
-        y: 0
-      });
-
-    xhrRendition.append('tspan').text('Internet').attr('x', readerX);
-    xhrRendition.append('tspan').text('Response!').attr({
-      x: readerX,
-      dy: '1em'
-    });
-
-    moveThing({
-      thing: xhrRendition,
-      dest: [readerX, middleOfReaderY],
-      duration: 1800, 
-      done: function kickOffWordMovement() {
-        moveWordIntoParserBox(smidgeo, function explodeWord() {
-          var tokens = breakWordIntoTokens(smidgeo);
-          tokens.forEach(flingTokenToRendererBox.bind({done: tokenToBlock}));
-        });
-      }
-    });
   }
 
-  init();
+  function feedWordIntoFlow(theWord) {
+    var word = putWordInBox(readerBox, theWord);
+
+    function explodeWord() {
+      var tokens = breakWordIntoTokens(word);
+      tokens.forEach(flingTokenToRendererBox.bind({done: tokenToBlock}));
+    }
+    
+    moveWordIntoParserBox(word, explodeWord);
+  }
+
+  function addWordGroups() {
+    var groupsOfWordsAdded = 0;
+
+    function addWords() {
+      var wordsAdded = 0;
+
+      function addWord() {
+        feedWordIntoFlow(randomId(10));
+        wordsAdded += 1;
+        if (wordsAdded > 5) {
+          clearInterval(wordIntervalKey);
+        }
+      }
+
+      addWord();
+      var wordIntervalKey = setInterval(addWord, 4000);
+
+      if (groupsOfWordsAdded > 2) {
+        clearInterval(groupIntervalKey);
+      }
+    }
+
+    addWords();
+    var groupIntervalKey = setInterval(addWords, 15000);
+  }
+
+  var internetResponses = 0;
+  function renderInternetResponse() {
+    dropTextIntoBox(readerBox, 'Response from Internet!', addWordGroups);
+    internetResponses += 1;
+    if (internetResponses > 2) {
+      clearInterval(internetKey);
+    }
+  }
+
+  renderInternetResponse();
+  var internetKey = setInterval(renderInternetResponse, 30000);
   
   return {
   };

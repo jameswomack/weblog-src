@@ -30,7 +30,9 @@ In the situation I set up &mdash; piping a huge text file to a parser stream, th
   <g id="chunk-layer">
   </g>
   <g>
-    <rect id="reader" x="40" y="180" width="120" height="90" fill="red"></rect>
+    <g>
+      <rect id="reader" x="40" y="180" width="120" height="90" fill="red"></rect> 
+    </g>
     <rect id="parser" x="275" y="50" width="100" height="100" fill="green"></rect>
     <rect id="renderer" x="525" y="225" width="100" height="100" fill="blue"></rect>
   </g>
