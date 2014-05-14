@@ -33,18 +33,29 @@ I think there's a lesson here about streaming as well. Streams are about process
 In the situation I set up &mdash; piping a huge text file to a parser stream, then piping the parsed tokens to a renderer &mdash; streams of text were transformed into streams of token objects which were then transformed into SVG elements. But those SVG elements did not "pass through." They piled up in the DOM, eating up memory.
 
 <svg width="800" height="600">
+<defs>
+  <radialGradient id="sphere-gradient">
+    <stop offset="0" stop-color="hsl(30, 100%, 80%)"/>
+    <stop offset="0.55" stop-color="hsl(20, 100%, 50%)">
+      <animate attributeName="offset" values="0.55;0.9;0.55" keySplines="0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1" dur="4s" repeatCount="indefinite" />
+    </stop>
+    <stop offset="1" stop-color="hsl(10, 100%, 40%)" />
+  </radialGradient>
+</defs>
+
   <g id="chunk-layer">
   </g>
   <g>
     <g>
-      <rect id="reader" x="40" y="180" width="120" height="90" fill="red"></rect> 
+      <circle id="reader" cx="100" cy="180" r="80" fill="url(#sphere-gradient)" />
     </g>
     <rect id="parser" x="275" y="50" width="100" height="100" fill="green"></rect>
     <rect id="renderer" x="525" y="225" width="100" height="100" fill="blue"></rect>
   </g>
   <g id="block-layer">
   </g>
-</svg>
+
+</svg>  
 
 Not every object benefits from being hit with a hammer, and some situations benefit less than others from having a streaming pattern applied.
 
