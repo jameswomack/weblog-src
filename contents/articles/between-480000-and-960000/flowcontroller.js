@@ -185,7 +185,7 @@ function flowController(opts) {
       var wordsAdded = 0;
 
       function addWord() {
-        feedWordIntoFlow(randomId(10));
+        feedWordIntoFlow(randomId(7));
         wordsAdded += 1;
         if (wordsAdded > 2) {
           clearInterval(wordIntervalKey);
