@@ -164,39 +164,11 @@ function flowController(opts) {
   function dropTextIntoBox(box, text, done) {
     var boxX = +box.attr('x');
 
-    // d3.select("defs").append("path")
-    //   .attr({
-    //     id: "s3",
-    //     d: bezierFactory({
-    //       source: {
-    //         x: boxX + readerBox.attr('x')/4,
-    //         y: 600
-    //       },
-    //       target: {
-    //         x: boxX,
-    //         y: +box.attr('y') + box.attr('height')/3
-    //       }
-    //     })
-    //   });
-
-    // opts.chunkLayer.append("text")
-    //   .append("textPath")
-    //     .attr("xlink:href", "#s3")
-    //     .text("Response from the internet!");
-
-
-    //     return;
-
-
     var pathId = 'path-' + ~~(Math.random() * 10000);
     var textpathId = 'text-' + pathId;
 
     d3.select('defs').append('path').attr({
-      id: 'whatever', //pathId,
-      // fill: 'none',
-      // stroke: 'black',
-      // strokeWidth: 2,
-      // 'stroke-opacity': 0.2,
+      id: pathId,
       d: bezierFactory({
         source: {
           x: boxX + readerBox.attr('x')/4,
@@ -211,35 +183,8 @@ function flowController(opts) {
 
     opts.chunkLayer.append('text')
       .append('textPath')
-        .attr('xlink:href', '#whatever')// '#' + pathId)
+        .attr('xlink:href', '#' + pathId)
         .text(text);
-      // .attr('id', textpathId);
-      // .attr('xmlns', 'http://www.w3.org/2000/svg');
-
-    // textpath.node().setAttributeNS('http://www.w3.org/1999/xlink', 
-    //   'xlink:href', '#curve1');// '#' + pathId);
-
-    // var pathAnimation = d3.select('#chunk-layer').append('animate');
-    // pathAnimation.attr({
-    //   attributeName: 'startOffset',
-    //   attributeType: 'XML',
-    //   dur: '7s',
-    //   from: '0',
-    //   to: '320',
-    //   repeatDur: 'indefinite'
-    // });
-    // pathAnimation.node().setAttributeNS('http://www.w3.org/1999/xlink', 
-    //   'xlink:href', '#' + textpathId);
-
-    // textpath.text(text);
-
-    // var words = text.split(' ');
-    // words.forEach(function appendSpan(word) {
-    //   rendition.append('tspan').text(word).attr({
-    //     x: boxX + readerBox.attr('x')/4,
-    //     dy: '1em'
-    //   });      
-    // });
 
     // moveThing({
     //   thing: rendition,
