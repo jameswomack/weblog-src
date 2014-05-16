@@ -9,6 +9,12 @@ template: article.jade
   .tagbox {
     font-size: 32px;
   }
+
+  .pipe {
+    fill: hsla(0, 100%, 0%, 0.0);
+    stroke-width: 1;
+    stroke: #888;
+  }
 </style>
 
 I've been working on a [simple streaming parser](https://github.com/jimkang/roguemap-parse-stream) for plain text maps. While writing the browser example (I originally wrote it for Node), I began to wonder if I could use the [Power of Streaming](https://github.com/substack/stream-handbook) to use it to render some really huge maps.
@@ -36,29 +42,57 @@ In the situation I set up &mdash; piping a huge text file to a parser stream, th
 <defs>
   <radialGradient id="sphere-gradient">
     <stop offset="0" stop-color="hsl(30, 100%, 80%)"/>
-    <stop offset="0.55" stop-color="hsl(20, 100%, 50%)">
-      <animate attributeName="offset" values="0.55;0.9;0.55" keySplines="0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1" dur="4s" repeatCount="indefinite" />
+    <stop offset="0.75" stop-color="hsl(20, 100%, 60%)">
+      <animate attributeName="offset" values="0.75;0.9;0.75" keySplines="0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1" dur="4s" repeatCount="indefinite" />
     </stop>
-    <stop offset="1" stop-color="hsl(10, 100%, 40%)" />
+    <stop offset="1" stop-color="hsl(10, 100%, 50%)">
+      <animate attributeName="stop-color" values="hsl(10, 100%, 50%);hsl(40, 100%, 70%);hsl(10, 100%, 50%)" keySplines="0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1" dur="4s" repeatCount="indefinite" />
+    </stop>
   </radialGradient>
+
+  <linearGradient id="pipe-gradient" x1="0" y1="0" x2="100%", y2="0">
+    <stop offset="0" stop-color="hsl(200, 100%, 10%)" />
+    <stop offset="0.5" stop-color="hsl(180, 100%, 20%)">
+      <animate attributeName="offset" values="0.5;0.9;0.5" keySplines="0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1" dur="10s" repeatCount="indefinite" />
+    </stop>
+    <stop offset="1" stop-color="hsl(200, 100%, 30%)">
+    </stop>
+  </linearGradient>
+
+
+  <path xmlns="http://www.w3.org/2000/svg" id="curve1" d="M 10 100 C 200 30 300 250 350 50" stroke="black" fill="none" stroke-width="5"/>
+  
 </defs>
 
-  <g id="chunk-layer">
+  <g class="background-layer">
   </g>
-  <g>
+  <g id="chunk-layer">
+    <path xmlns="http://www.w3.org/2000/svg" id="curve2" d="M 10 100 C 200 30 300 250 350 50" stroke="black" fill="none" stroke-width="5"/>
+
+  </g>
+  <g id="static-layer">
     <g>
-      <circle id="reader" cx="100" cy="180" r="80" fill="url(#sphere-gradient)" />
+      <rect id="reader" x="30" y="180" width="140" height="120" fill="hsla(0, 100%, 0%, 0.0)" stroke-width="1" stroke="#888" />
+      <rect class="rim" x="20" y="170" width="160" height="40" fill="green"></rect>
+      <rect class="rim" x="20" y="280" width="160" height="40" fill="green"></rect>
     </g>
-    <rect id="parser" x="275" y="50" width="100" height="100" fill="green"></rect>
+    <rect id="parser" x="275" y="0" width="100" height="100" fill="green"></rect>
     <rect id="renderer" x="525" y="225" width="100" height="100" fill="blue"></rect>
   </g>
   <g id="block-layer">
+    <text>
+      <textPath xlink:href="#curve1">
+        Hello, here is some text crawling along a bezier curve. 
+      </textPath>
+    </text>
+
   </g>
 
 </svg>  
 
 Not every object benefits from being hit with a hammer, and some situations benefit less than others from having a streaming pattern applied.
 
-<script type="text/javascript" src="d3.v3.min.js"></script>
+<script type="text/javascript" src="d3.v3.js"></script>
 <script type="text/javascript" src="gravitybox.js"></script>
+<script type="text/javascript" src="pathanimator.js"></script>
 <script type="text/javascript" src="flowcontroller.js"></script>

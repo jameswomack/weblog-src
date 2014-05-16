@@ -37,19 +37,51 @@ function flowController(opts) {
     }
   });
 
+  var pathanimator = createPathAnimator();
+  var bezierFactory = d3.svg.diagonal();
+
   function moveThing(moveOpts) {
     // Opts: thing, dest, duration, delay, done
     if (!moveOpts.delay) {
       moveOpts.delay = 0;
     }
 
-    moveOpts.thing.transition()
-      .duration(moveOpts.duration)
-      .delay(moveOpts.delay)
-      .attr({
-        x: moveOpts.dest[0],
-        y: moveOpts.dest[1]
-      });
+    // moveOpts.thing.transition()
+    //   .duration(10000)//moveOpts.duration)
+    //   .delay(moveOpts.delay)
+      // .attr({
+      //   x: moveOpts.dest[0],
+      //   y: moveOpts.dest[1]
+      // });
+
+    var pathId = 'path-' + ~~(Math.random * 10000);
+    var thingCoords = {
+      x: +moveOpts.thing.attr('x'), 
+      y: +moveOpts.thing.attr('y')
+    };
+
+    d3.select('#chunk-layer').append('path').attr({
+      id: pathId,
+      fill: 'none',
+      stroke: 'black',
+      strokeWidth: 2,
+      'stroke-opacity': 0.2,
+      //d: pathanimator.makePathDataForOrbit(1, 100)
+      d: bezierFactory({
+        source: thingCoords,
+        target: {
+          x: moveOpts.dest[0],
+          y: moveOpts.dest[1]
+        }
+      })
+    });
+
+    pathanimator.animateAlongPath({
+      selection: moveOpts.thing,
+      pathId: pathId,
+      duration: '10s',
+      repeatCount: 2
+    });
 
     if (moveOpts.done) {
       setTimeout(function passThingToCallback() {
@@ -69,7 +101,7 @@ function flowController(opts) {
       thing: word, 
       dest: parserCoords,
       duration: 1000, 
-      done: done
+      // done: done
     });
   }
 
@@ -132,26 +164,89 @@ function flowController(opts) {
   function dropTextIntoBox(box, text, done) {
     var boxX = +box.attr('x');
 
-    var rendition = opts.chunkLayer.append('text')      
-      .attr({
-        x: boxX + readerBox.attr('x')/2,
-        y: 0
-      });
+    // d3.select("defs").append("path")
+    //   .attr({
+    //     id: "s3",
+    //     d: bezierFactory({
+    //       source: {
+    //         x: boxX + readerBox.attr('x')/4,
+    //         y: 600
+    //       },
+    //       target: {
+    //         x: boxX,
+    //         y: +box.attr('y') + box.attr('height')/3
+    //       }
+    //     })
+    //   });
 
-    var words = text.split(' ');
-    words.forEach(function appendSpan(word) {
-      rendition.append('tspan').text(word).attr({
-        x: boxX + readerBox.attr('x')/2,
-        dy: '1em'
-      });      
+    // opts.chunkLayer.append("text")
+    //   .append("textPath")
+    //     .attr("xlink:href", "#s3")
+    //     .text("Response from the internet!");
+
+
+    //     return;
+
+
+    var pathId = 'path-' + ~~(Math.random() * 10000);
+    var textpathId = 'text-' + pathId;
+
+    d3.select('defs').append('path').attr({
+      id: 'whatever', //pathId,
+      // fill: 'none',
+      // stroke: 'black',
+      // strokeWidth: 2,
+      // 'stroke-opacity': 0.2,
+      d: bezierFactory({
+        source: {
+          x: boxX + readerBox.attr('x')/4,
+          y: 600
+        },
+        target: {
+          x: boxX,
+          y: +box.attr('y') + box.attr('height')/3
+        }
+      })
     });
 
-    moveThing({
-      thing: rendition,
-      dest: [boxX, +box.attr('y') + box.attr('height')/3],
-      duration: 1000,
-      done: done
-    });
+    opts.chunkLayer.append('text')
+      .append('textPath')
+        .attr('xlink:href', '#whatever')// '#' + pathId)
+        .text(text);
+      // .attr('id', textpathId);
+      // .attr('xmlns', 'http://www.w3.org/2000/svg');
+
+    // textpath.node().setAttributeNS('http://www.w3.org/1999/xlink', 
+    //   'xlink:href', '#curve1');// '#' + pathId);
+
+    // var pathAnimation = d3.select('#chunk-layer').append('animate');
+    // pathAnimation.attr({
+    //   attributeName: 'startOffset',
+    //   attributeType: 'XML',
+    //   dur: '7s',
+    //   from: '0',
+    //   to: '320',
+    //   repeatDur: 'indefinite'
+    // });
+    // pathAnimation.node().setAttributeNS('http://www.w3.org/1999/xlink', 
+    //   'xlink:href', '#' + textpathId);
+
+    // textpath.text(text);
+
+    // var words = text.split(' ');
+    // words.forEach(function appendSpan(word) {
+    //   rendition.append('tspan').text(word).attr({
+    //     x: boxX + readerBox.attr('x')/4,
+    //     dy: '1em'
+    //   });      
+    // });
+
+    // moveThing({
+    //   thing: rendition,
+    //   dest: [
+    //   duration: 1000,
+    //   done: done
+    // });
   }
 
   function putWordInBox(box, text) {
@@ -193,7 +288,7 @@ function flowController(opts) {
       }
 
       addWord();
-      var wordIntervalKey = setInterval(addWord, 4000);
+      // var wordIntervalKey = setInterval(addWord, 4000);
 
       if (groupsOfWordsAdded > 2) {
         clearInterval(groupIntervalKey);
@@ -201,12 +296,12 @@ function flowController(opts) {
     }
 
     addWords();
-    var groupIntervalKey = setInterval(addWords, 20000);
+    // var groupIntervalKey = setInterval(addWords, 20000);
   }
 
   var internetResponses = 0;
   function renderInternetResponse() {
-    dropTextIntoBox(readerBox, 'Response from Internet!', addWordGroups);
+    dropTextIntoBox(readerBox, 'Response from Internet!', null);//addWordGroups);
     internetResponses += 1;
     if (internetResponses > 2) {
       clearInterval(internetKey);
@@ -214,7 +309,7 @@ function flowController(opts) {
   }
 
   renderInternetResponse();
-  var internetKey = setInterval(renderInternetResponse, 60000);
+  // var internetKey = setInterval(renderInternetResponse, 60000);
   
   return {
   };
