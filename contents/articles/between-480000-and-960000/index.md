@@ -58,12 +58,7 @@ In the situation I set up &mdash; piping a huge text file to a parser stream, th
     <stop offset="1" stop-color="hsl(200, 100%, 30%)">
     </stop>
   </linearGradient>
-
-
-  <path xmlns="http://www.w3.org/2000/svg" id="curve1" d="M 10 100 C 200 30 300 250 350 50" stroke="black" fill="none" stroke-width="5"/>
-  
 </defs>
-
   <g class="background-layer">
   </g>
   <g id="chunk-layer">
@@ -80,12 +75,6 @@ In the situation I set up &mdash; piping a huge text file to a parser stream, th
     <rect id="renderer" x="525" y="225" width="100" height="100" fill="blue"></rect>
   </g>
   <g id="block-layer">
-    <text>
-      <textPath xlink:href="#curve1">
-        Hello, here is some text crawling along a bezier curve. 
-      </textPath>
-    </text>
-
   </g>
 
 </svg>  

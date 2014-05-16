@@ -171,20 +171,33 @@ function flowController(opts) {
       id: pathId,
       d: bezierFactory({
         source: {
-          x: boxX + readerBox.attr('x')/4,
-          y: 600
+          x: boxX + readerBox.attr('width')/2,
+          y: 800
         },
         target: {
-          x: boxX,
-          y: +box.attr('y') + box.attr('height')/3
+          x: boxX + readerBox.attr('width')/2,
+          y: +box.attr('y') + +box.attr('height')
         }
       })
     });
 
-    opts.chunkLayer.append('text')
+    // textPath id cannot be set via attr {} ? Weird.
+    var textPath = opts.chunkLayer.append('text')
+      // .attr('id', textpathId)
       .append('textPath')
         .attr('xlink:href', '#' + pathId)
+        .attr('id', textpathId)
         .text(text);
+
+    opts.chunkLayer.append('animate').attr({
+      'xlink:href': '#' + textpathId,
+      attributeName: 'startOffset',
+      attributeType: 'XML',
+      from: '0%',
+      to: '100%',
+      dur: '2s',
+      repeatCount: 1
+    });
 
     // moveThing({
     //   thing: rendition,
