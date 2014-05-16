@@ -39,26 +39,26 @@ I think there's a lesson here about streaming as well. Streams are about process
 In the situation I set up &mdash; piping a huge text file to a parser stream, then piping the parsed tokens to a renderer &mdash; streams of text were transformed into streams of token objects which were then transformed into SVG elements. But those SVG elements did not "pass through." They piled up in the DOM, eating up memory.
 
 <svg width="800" height="600">
-<defs>
-  <radialGradient id="sphere-gradient">
-    <stop offset="0" stop-color="hsl(30, 100%, 80%)"/>
-    <stop offset="0.75" stop-color="hsl(20, 100%, 60%)">
-      <animate attributeName="offset" values="0.75;0.9;0.75" keySplines="0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1" dur="4s" repeatCount="indefinite" />
-    </stop>
-    <stop offset="1" stop-color="hsl(10, 100%, 50%)">
-      <animate attributeName="stop-color" values="hsl(10, 100%, 50%);hsl(40, 100%, 70%);hsl(10, 100%, 50%)" keySplines="0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1" dur="4s" repeatCount="indefinite" />
-    </stop>
-  </radialGradient>
+  <defs>
+    <radialGradient id="sphere-gradient">
+      <stop offset="0" stop-color="hsl(30, 100%, 80%)"/>
+      <stop offset="0.75" stop-color="hsl(20, 100%, 60%)">
+        <animate attributeName="offset" values="0.75;0.9;0.75" keySplines="0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1" dur="4s" repeatCount="indefinite" />
+      </stop>
+      <stop offset="1" stop-color="hsl(10, 100%, 50%)">
+        <animate attributeName="stop-color" values="hsl(10, 100%, 50%);hsl(40, 100%, 70%);hsl(10, 100%, 50%)" keySplines="0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1" dur="4s" repeatCount="indefinite" />
+      </stop>
+    </radialGradient>
 
-  <linearGradient id="pipe-gradient" x1="0" y1="0" x2="100%", y2="0">
-    <stop offset="0" stop-color="hsl(200, 100%, 10%)" />
-    <stop offset="0.5" stop-color="hsl(180, 100%, 20%)">
-      <animate attributeName="offset" values="0.5;0.9;0.5" keySplines="0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1" dur="10s" repeatCount="indefinite" />
-    </stop>
-    <stop offset="1" stop-color="hsl(200, 100%, 30%)">
-    </stop>
-  </linearGradient>
-</defs>
+    <linearGradient id="pipe-gradient" x1="0" y1="0" x2="100%", y2="0">
+      <stop offset="0" stop-color="hsl(200, 100%, 10%)" />
+      <stop offset="0.5" stop-color="hsl(180, 100%, 20%)">
+        <animate attributeName="offset" values="0.5;0.9;0.5" keySplines="0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1" dur="10s" repeatCount="indefinite" />
+      </stop>
+      <stop offset="1" stop-color="hsl(200, 100%, 30%)">
+      </stop>
+    </linearGradient>
+  </defs>
   <g class="background-layer">
   </g>
   <g id="chunk-layer">
