@@ -62,14 +62,12 @@ In the situation I set up &mdash; piping a huge text file to a parser stream, th
   <g class="background-layer">
   </g>
   <g id="chunk-layer">
-    <path xmlns="http://www.w3.org/2000/svg" id="curve2" d="M 10 100 C 200 30 300 250 350 50" stroke="black" fill="none" stroke-width="5"/>
-
   </g>
   <g id="static-layer">
     <g>
-      <rect id="reader" x="30" y="180" width="140" height="120" fill="hsla(0, 100%, 0%, 0.0)" stroke-width="1" stroke="#888" />
-      <rect class="rim" x="20" y="170" width="160" height="40" fill="green"></rect>
-      <rect class="rim" x="20" y="280" width="160" height="40" fill="green"></rect>
+      <rect id="reader" x="30" y="300" width="140" height="120" fill="hsla(0, 100%, 0%, 0.0)" stroke-width="1" stroke="#888" />
+      <rect class="rim" x="20" y="290" width="160" height="40" fill="green"></rect>
+      <rect class="rim" x="20" y="400" width="160" height="40" fill="green"></rect>
     </g>
     <rect id="parser" x="275" y="0" width="100" height="100" fill="green"></rect>
     <rect id="renderer" x="525" y="225" width="100" height="100" fill="blue"></rect>
@@ -81,7 +79,8 @@ In the situation I set up &mdash; piping a huge text file to a parser stream, th
 
 Not every object benefits from being hit with a hammer, and some situations benefit less than others from having a streaming pattern applied.
 
-<script type="text/javascript" src="d3.v3.js"></script>
-<script type="text/javascript" src="gravitybox.js"></script>
-<script type="text/javascript" src="pathanimator.js"></script>
-<script type="text/javascript" src="flowcontroller.js"></script>
+<script src="d3.v3.js"></script>
+<script src="gravitybox.js"></script>
+<script src="idmaker.js"></script>
+<script src="mover.js"></script>
+<script src="flowcontroller.js"></script>

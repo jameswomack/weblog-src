@@ -1,26 +1,13 @@
 function flowController(opts) {
+  var idmaker = createIdmaker();
+  var mover = createMover();
+
   var readerBox = d3.select('#reader');
   var parserBox = d3.select('#parser');
   var rendererBox = d3.select('#renderer');
 
   if (!opts.delay) {
     opts.delay = 500;
-  }
-
-  function pickFromArrayAtRandom(array) {
-    return array[~~(Math.random() * array.length)];
-  }
-
-  var idChars = 
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'.split('');
-
-  // Creates a string of random characters of the length specified.
-  function randomId(len) {
-    var id = '';
-    for (var i = 0; i < len; ++i) {
-      id += pickFromArrayAtRandom(idChars);
-    }
-    return id;
   }
 
   var gravitybox = createGravityBox({
@@ -37,7 +24,6 @@ function flowController(opts) {
     }
   });
 
-  var pathanimator = createPathAnimator();
   var bezierFactory = d3.svg.diagonal();
 
   function moveThing(moveOpts) {
@@ -54,7 +40,7 @@ function flowController(opts) {
       //   y: moveOpts.dest[1]
       // });
 
-    var pathId = 'path-' + ~~(Math.random * 10000);
+    var pathId = 'path-' + idmaker.randomId(8);
     var thingCoords = {
       x: +moveOpts.thing.attr('x'), 
       y: +moveOpts.thing.attr('y')
@@ -66,7 +52,6 @@ function flowController(opts) {
       stroke: 'black',
       strokeWidth: 2,
       'stroke-opacity': 0.2,
-      //d: pathanimator.makePathDataForOrbit(1, 100)
       d: bezierFactory({
         source: thingCoords,
         target: {
@@ -91,17 +76,28 @@ function flowController(opts) {
     }
   }
 
-  function moveWordIntoParserBox(word, done) {
-    var parserCoords = [
-      +parserBox.attr('x'), 
-      +parserBox.attr('y') + parserBox.attr('height')/2
-    ];
+  function moveWordIntoParserBox(word, source, done) {
+    // var parserCoords = [
+    //   +parserBox.attr('x'), 
+    //   +parserBox.attr('y') + parserBox.attr('height')/2
+    // ];
 
-    moveThing({
-      thing: word, 
-      dest: parserCoords,
-      duration: 1000, 
-      // done: done
+    // moveThing({
+    //   thing: word, 
+    //   dest: parserCoords,
+    //   duration: 1000, 
+    //   // done: done
+    // });
+    mover.moveTextAlongCurve({
+      text: word,
+      layer: d3.select('#chunk-layer'),
+      source: source,
+      target: {
+        x: +parserBox.attr('x') + parserBox.attr('width')/2,
+        y: +parserBox.attr('y') + parserBox.attr('height')/2
+      },
+      duration: 3000,
+      done: done
     });
   }
 
@@ -161,52 +157,6 @@ function flowController(opts) {
     return block;
   }
 
-  function dropTextIntoBox(box, text, done) {
-    var boxX = +box.attr('x');
-
-    var pathId = 'path-' + ~~(Math.random() * 10000);
-    var textpathId = 'text-' + pathId;
-
-    d3.select('defs').append('path').attr({
-      id: pathId,
-      d: bezierFactory({
-        source: {
-          x: boxX + readerBox.attr('width')/2,
-          y: 800
-        },
-        target: {
-          x: boxX + readerBox.attr('width')/2,
-          y: +box.attr('y') + +box.attr('height')
-        }
-      })
-    });
-
-    // textPath id cannot be set via attr {} ? Weird.
-    var textPath = opts.chunkLayer.append('text')
-      // .attr('id', textpathId)
-      .append('textPath')
-        .attr('xlink:href', '#' + pathId)
-        .attr('id', textpathId)
-        .text(text);
-
-    opts.chunkLayer.append('animate').attr({
-      'xlink:href': '#' + textpathId,
-      attributeName: 'startOffset',
-      attributeType: 'XML',
-      from: '0%',
-      to: '100%',
-      dur: '2s',
-      repeatCount: 1
-    });
-
-    // moveThing({
-    //   thing: rendition,
-    //   dest: [
-    //   duration: 1000,
-    //   done: done
-    // });
-  }
-
   function putWordInBox(box, text) {
     var readerX = +box.attr('x');
     var middleOfReaderY = +box.attr('y') + box.attr('height')/2;
@@ -221,14 +171,19 @@ function flowController(opts) {
   }
 
   function feedWordIntoFlow(theWord) {
-    var word = putWordInBox(readerBox, theWord);
+    // var word = putWordInBox(readerBox, theWord);
 
     function explodeWord() {
-      var tokens = breakWordIntoTokens(word);
-      tokens.forEach(flingTokenToRendererBox.bind({done: tokenToBlock}));
+      // var tokens = breakWordIntoTokens(theWord);
+      // tokens.forEach(flingTokenToRendererBox.bind({done: tokenToBlock}));
     }
     
-    moveWordIntoParserBox(word, explodeWord);
+    var readerBoxCenter = {
+      x: +readerBox.attr('x') + readerBox.attr('width')/2,
+      y: +readerBox.attr('y') + readerBox.attr('height')/2
+    };
+
+    moveWordIntoParserBox(theWord, readerBoxCenter, explodeWord);
   }
 
   function addWordGroups() {
@@ -238,7 +193,7 @@ function flowController(opts) {
       var wordsAdded = 0;
 
       function addWord() {
-        feedWordIntoFlow(randomId(7));
+        feedWordIntoFlow(idmaker.randomId(7));
         wordsAdded += 1;
         if (wordsAdded > 2) {
           clearInterval(wordIntervalKey);
@@ -259,7 +214,21 @@ function flowController(opts) {
 
   var internetResponses = 0;
   function renderInternetResponse() {
-    dropTextIntoBox(readerBox, 'Response from Internet!', null);//addWordGroups);
+    var boxCenterX = +readerBox.attr('x') + readerBox.attr('width')/2;
+    mover.moveTextAlongCurve({
+      text: 'Response from Internet!',
+      layer: d3.select('#chunk-layer'),
+      source: {
+        x: boxCenterX - 100,
+        y: -200
+      },
+      target: {
+        x: boxCenterX,
+        y: +readerBox.attr('y') + +readerBox.attr('height')
+      },
+      done: addWordGroups
+    });
+
     internetResponses += 1;
     if (internetResponses > 2) {
       clearInterval(internetKey);
