@@ -6,10 +6,6 @@ function flowController(opts) {
   var parserBox = d3.select('#parser');
   var rendererBox = d3.select('#renderer');
 
-  if (!opts.delay) {
-    opts.delay = 500;
-  }
-
   var gravitybox = createGravityBox({
     root: d3.select('#block-layer'),
     width: 800,
@@ -24,70 +20,7 @@ function flowController(opts) {
     }
   });
 
-  var bezierFactory = d3.svg.diagonal();
-
-  function moveThing(moveOpts) {
-    // Opts: thing, dest, duration, delay, done
-    if (!moveOpts.delay) {
-      moveOpts.delay = 0;
-    }
-
-    // moveOpts.thing.transition()
-    //   .duration(10000)//moveOpts.duration)
-    //   .delay(moveOpts.delay)
-      // .attr({
-      //   x: moveOpts.dest[0],
-      //   y: moveOpts.dest[1]
-      // });
-
-    var pathId = 'path-' + idmaker.randomId(8);
-    var thingCoords = {
-      x: +moveOpts.thing.attr('x'), 
-      y: +moveOpts.thing.attr('y')
-    };
-
-    d3.select('#chunk-layer').append('path').attr({
-      id: pathId,
-      fill: 'none',
-      stroke: 'black',
-      strokeWidth: 2,
-      'stroke-opacity': 0.2,
-      d: bezierFactory({
-        source: thingCoords,
-        target: {
-          x: moveOpts.dest[0],
-          y: moveOpts.dest[1]
-        }
-      })
-    });
-
-    pathanimator.animateAlongPath({
-      selection: moveOpts.thing,
-      pathId: pathId,
-      duration: '10s',
-      repeatCount: 2
-    });
-
-    if (moveOpts.done) {
-      setTimeout(function passThingToCallback() {
-        moveOpts.done(moveOpts.thing);
-      },
-      moveOpts.delay + moveOpts.duration);
-    }
-  }
-
   function moveWordIntoParserBox(word, source, done) {
-    // var parserCoords = [
-    //   +parserBox.attr('x'), 
-    //   +parserBox.attr('y') + parserBox.attr('height')/2
-    // ];
-
-    // moveThing({
-    //   thing: word, 
-    //   dest: parserCoords,
-    //   duration: 1000, 
-    //   // done: done
-    // });
     mover.moveTextAlongCurve({
       text: word,
       layer: d3.select('#chunk-layer'),
@@ -96,7 +29,8 @@ function flowController(opts) {
         x: +parserBox.attr('x') + parserBox.attr('width')/2,
         y: +parserBox.attr('y') + parserBox.attr('height')/2
       },
-      duration: 3000,
+      duration: 1500,
+      ease: d3.ease('linear'),
       done: done
     });
   }
@@ -119,28 +53,12 @@ function flowController(opts) {
     return wordText.split('').map(renderChar);
   }
 
-  function flingTokenToRendererBox(token, tokenNumber) {
-    var rendererCoords = [
-      +rendererBox.attr('x'), 
-      +rendererBox.attr('y') + rendererBox.attr('height')/2
-    ];
-
-    moveThing({
-      thing: token, 
-      dest: rendererCoords, 
-      duration: 1000,
-      delay: tokenNumber * opts.delay,
-      done: this.done
-    });
-  }
-
-  function blockForToken(token) {
+  function addBlockForToken(token) {
     gravitybox.add([
       {
-        x: +token.attr('x') + token.attr('width')/2,
-        y: token.attr('y'),
+        x: +rendererBox.attr('x') + 20,
+        y: +rendererBox.attr('y') + 0.6 * rendererBox.attr('height'),
         attrs: {
-          // r: 30,
           width: 30,
           height: 30,
           fill: '#666'
@@ -151,41 +69,47 @@ function flowController(opts) {
   }
 
   function tokenToBlock(token) {
-    var block = blockForToken(token);
+    var block = addBlockForToken(token);
     token.remove();
 
     return block;
   }
 
-  function putWordInBox(box, text) {
-    var readerX = +box.attr('x');
-    var middleOfReaderY = +box.attr('y') + box.attr('height')/2;
+  function moveWordFromReaderToParser(theWord) {
 
-    return opts.chunkLayer.append('text')
-      .text(text)
-      .attr({
-        x: readerX,
-        y: middleOfReaderY,
-        dy: '1em'
-      });
-  }
-
-  function feedWordIntoFlow(theWord) {
-    // var word = putWordInBox(readerBox, theWord);
-
-    function explodeWord() {
-      // var tokens = breakWordIntoTokens(theWord);
-      // tokens.forEach(flingTokenToRendererBox.bind({done: tokenToBlock}));
-    }
-    
     var readerBoxCenter = {
       x: +readerBox.attr('x') + readerBox.attr('width')/2,
       y: +readerBox.attr('y') + readerBox.attr('height')/2
     };
 
-    moveWordIntoParserBox(theWord, readerBoxCenter, explodeWord);
+    moveWordIntoParserBox(theWord, readerBoxCenter, next);
+
+    function next(wordRendition) {
+      wordRendition.remove();
+      var letters = theWord.split('');
+      letters.forEach(moveLetterFromParserBoxToRendererBox);
+    }
   }
 
+  function moveLetterFromParserBoxToRendererBox(letter, i) {
+    mover.moveTextAlongCurve({
+      text: letter,
+      layer: d3.select('#chunk-layer'),
+      source: {
+        x: +parserBox.attr('x') + 0.8 * parserBox.attr('width') + i * 10,
+        y: +parserBox.attr('y') + 1.1 * parserBox.attr('height') - i * 15
+      },
+      target: {
+        x: +rendererBox.attr('x') + rendererBox.attr('width')/4 + i * 10,
+        y: +rendererBox.attr('y') + 0.8 * rendererBox.attr('height') - i * 15
+      },
+      delay: 150 * i,
+      done: function letterMoved(letterRendition) {
+        tokenToBlock(letterRendition);
+      }
+    });
+  }
+  
   function addWordGroups() {
     var groupsOfWordsAdded = 0;
 
@@ -193,7 +117,7 @@ function flowController(opts) {
       var wordsAdded = 0;
 
       function addWord() {
-        feedWordIntoFlow(idmaker.randomId(7));
+        moveWordFromReaderToParser(idmaker.randomId(7));
         wordsAdded += 1;
         if (wordsAdded > 2) {
           clearInterval(wordIntervalKey);
@@ -201,7 +125,7 @@ function flowController(opts) {
       }
 
       addWord();
-      // var wordIntervalKey = setInterval(addWord, 4000);
+      var wordIntervalKey = setInterval(addWord, 4000);
 
       if (groupsOfWordsAdded > 2) {
         clearInterval(groupIntervalKey);
@@ -209,7 +133,7 @@ function flowController(opts) {
     }
 
     addWords();
-    // var groupIntervalKey = setInterval(addWords, 20000);
+    var groupIntervalKey = setInterval(addWords, 18000);
   }
 
   var internetResponses = 0;
@@ -219,12 +143,12 @@ function flowController(opts) {
       text: 'Response from Internet!',
       layer: d3.select('#chunk-layer'),
       source: {
-        x: boxCenterX - 100,
+        x: boxCenterX - 200,
         y: -200
       },
       target: {
-        x: boxCenterX,
-        y: +readerBox.attr('y') + +readerBox.attr('height')
+        x: boxCenterX - 100,
+        y: +readerBox.attr('y') + +readerBox.attr('height')/2
       },
       done: addWordGroups
     });
@@ -236,7 +160,7 @@ function flowController(opts) {
   }
 
   renderInternetResponse();
-  // var internetKey = setInterval(renderInternetResponse, 60000);
+  var internetKey = setInterval(renderInternetResponse, 60000);
   
   return {
   };
