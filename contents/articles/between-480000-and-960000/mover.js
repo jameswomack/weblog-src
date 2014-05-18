@@ -52,7 +52,7 @@ function createMover() {
       setTimeout(function callDone() {
         opts.done(textRendition);
       }, 
-      opts.duration + 1000);
+      opts.duration + opts.delay + 1);
     }
     setTimeout(cleanUp, opts.duration);
   }
