@@ -15,6 +15,30 @@ template: article.jade
     stroke-width: 1;
     stroke: #888;
   }
+
+  svg {
+    font-size: 20px;
+  }
+
+  svg text {
+    fill: #5c5c5c;
+  }
+
+  .station {
+    stroke: #777;
+    stroke-width: 3;
+    fill: #fff;
+  }
+
+  .station-label {
+    font-size: 24px;
+    text-align: center;
+    text-anchor: middle;
+  }
+
+  #block-layer text {
+    fill: hsl(0, 60%, 60%);
+  }
 </style>
 
 I've been working on a [simple streaming parser](https://github.com/jimkang/roguemap-parse-stream) for plain text maps. While writing the browser example (I originally wrote it for Node), I began to wonder if I could use the [Power of Streaming](https://github.com/substack/stream-handbook) to use it to render some really huge maps.
@@ -37,6 +61,8 @@ So, if you find yourself having to create this many elements via JavaScript, kee
 I think there's a lesson here about streaming as well. Streams are about processing data a manageable chunk at a time, but if you can't dispose of those chunks after you're done with them, those chunks pool up, and the chunk-at-a-time benefit of streams is negated. 
 
 In the situation I set up &mdash; piping a huge text file to a parser stream, then piping the parsed tokens to a renderer &mdash; streams of text were transformed into streams of token objects which were then transformed into SVG elements. But those SVG elements did not "pass through." They piled up in the DOM, eating up memory.
+
+<a name="stream-overload-diagram-anchor"></a>
 
 <svg width="800" height="600" id="stream-overload-diagram">
   <defs>
