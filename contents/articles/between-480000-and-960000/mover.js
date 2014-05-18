@@ -18,6 +18,9 @@ function createMover() {
     if (!opts.delay) {
       opts.delay = 0;
     }
+    if (!opts.ease) {
+      opts.ease = d3.ease('cubic-in-out');
+    }
 
     var pathId = 'path-' + idmaker.randomId(8);
     var textpathId = 'text-' + pathId;
@@ -36,6 +39,7 @@ function createMover() {
 
     textRendition
       .transition()
+        .ease(opts.ease)
         .duration(opts.duration)
         .delay(opts.delay)
         .attrTween('transform', translateAlong(path.node()));
