@@ -15,6 +15,10 @@ function createMover() {
     if (!opts.duration) {
       opts.duration = 2000;
     }
+    if (!opts.delay) {
+      opts.delay = 0;
+    }
+
     var pathId = 'path-' + idmaker.randomId(8);
     var textpathId = 'text-' + pathId;
 
@@ -27,18 +31,24 @@ function createMover() {
 
     var textRendition = opts.layer.append('text').text(opts.text)
       .attr('transform', function translate(d) {
-        return 'translate(' + d + ')';
+        return 'translate(' + opts.source.x + ', ' + opts.source.y + ')';
       });
 
-    textRendition.transition().duration(opts.duration)
-      .attrTween('transform', translateAlong(path.node()));
+    textRendition
+      .transition()
+        .duration(opts.duration)
+        .delay(opts.delay)
+        .attrTween('transform', translateAlong(path.node()));
 
     function cleanUp() {
       path.remove();
     }
 
     if (opts.done) {
-      setTimeout(opts.done, opts.duration + 1000);
+      setTimeout(function callDone() {
+        opts.done(textRendition);
+      }, 
+      opts.duration + 1000);
     }
     setTimeout(cleanUp, opts.duration);
   }
