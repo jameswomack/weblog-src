@@ -461,7 +461,21 @@ ol.alpha {
 }
 
 svg {
-  font-family: 'Helvetica Neue', sans-serif;
-  font-size: 18px;
+  font-size: 20px;
 }
 
+svg text {
+  fill: #5c5c5c;
+}
+
+.station {
+  stroke: #777;
+  stroke-width: 3;
+  fill: #fff;
+}
+
+.station-label {
+  font-size: 24px;
+  text-align: center;
+  text-anchor: middle;
+}

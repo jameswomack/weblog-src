@@ -65,12 +65,26 @@ In the situation I set up &mdash; piping a huge text file to a parser stream, th
   </g>
   <g id="static-layer">
     <g>
-      <rect id="reader" x="30" y="300" width="140" height="120" fill="hsla(0, 100%, 0%, 0.0)" stroke-width="1" stroke="#888" />
-      <rect class="rim" x="20" y="290" width="160" height="40" fill="green"></rect>
-      <rect class="rim" x="20" y="400" width="160" height="40" fill="green"></rect>
+      <rect id="reader" x="30" y="300" width="200" height="120" 
+      class="station" />
+      <text x="30" dx="4.2em" y="300" dy="2.8em" width="200" class="station-label">Internet requester</text>
     </g>
-    <rect id="parser" x="275" y="0" width="100" height="100" fill="green"></rect>
-    <rect id="renderer" x="525" y="225" width="100" height="100" fill="blue"></rect>
+
+    <g>
+      <path d=" M 250 4
+                L 440 4
+                L 345 154
+                Z"
+            class="station"
+            id="parser" x="250" y="4" width="100" height="100" />
+      <text x="250" y="4" dx="4em" dy="2.35em" class="station-label">Parser</text>
+    </g>
+
+    <g>
+      <circle id="renderer" x="525" y="175" width="150" height="150"
+      r="75" cx="600" cy="250" class="station"></circle>
+      <text x="525" y="175" dx="3.1em" dy="2.25em" class="station-label">Renderer</text>
+    </g>
   </g>
   <g id="block-layer">
   </g>
