@@ -136,32 +136,53 @@ function flowController(opts) {
     var groupIntervalKey = setInterval(addWords, 18000);
   }
 
-  var internetResponses = 0;
-  function renderInternetResponse() {
-    var boxCenterX = +readerBox.attr('x') + readerBox.attr('width')/2;
-    mover.moveTextAlongCurve({
-      text: 'Response from Internet!',
-      layer: d3.select('#chunk-layer'),
-      source: {
-        x: boxCenterX - 200,
-        y: -200
-      },
-      target: {
-        x: boxCenterX - 100,
-        y: +readerBox.attr('y') + +readerBox.attr('height')/2
-      },
-      done: addWordGroups
-    });
+  function startMotion() {
+    var internetResponses = 0;
+    function renderInternetResponse() {
+      var boxCenterX = +readerBox.attr('x') + readerBox.attr('width')/2;
+      mover.moveTextAlongCurve({
+        text: 'Response from Internet!',
+        layer: d3.select('#chunk-layer'),
+        source: {
+          x: boxCenterX - 200,
+          y: -200
+        },
+        target: {
+          x: boxCenterX - 100,
+          y: +readerBox.attr('y') + +readerBox.attr('height')/2
+        },
+        duration: 3500,
+        done: addWordGroups
+      });
 
-    internetResponses += 1;
-    if (internetResponses > 2) {
-      clearInterval(internetKey);
+      internetResponses += 1;
+      if (internetResponses > 2) {
+        clearInterval(internetKey);
+      }
     }
+    renderInternetResponse();
+    var internetKey = setInterval(renderInternetResponse, 60000);
   }
 
-  renderInternetResponse();
-  var internetKey = setInterval(renderInternetResponse, 60000);
   
+  ((function watchForScrollIntoView() {
+    function onElCenterInView(e) {
+      document.removeEventListener('elMovedIntoView', onElCenterInView);
+      startMotion();
+    }
+
+    var scrollWatcher = createScrollWatcher();
+    scrollWatcher.watchElements(
+      [
+        {
+          selector: '#stream-overload-diagram'
+        }
+      ]
+    );
+
+    document.addEventListener('elMovedIntoView', onElCenterInView);
+  })());
+
   return {
   };
 }

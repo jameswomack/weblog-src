@@ -38,7 +38,7 @@ I think there's a lesson here about streaming as well. Streams are about process
 
 In the situation I set up &mdash; piping a huge text file to a parser stream, then piping the parsed tokens to a renderer &mdash; streams of text were transformed into streams of token objects which were then transformed into SVG elements. But those SVG elements did not "pass through." They piled up in the DOM, eating up memory.
 
-<svg width="800" height="600">
+<svg width="800" height="600" id="stream-overload-diagram">
   <defs>
     <radialGradient id="sphere-gradient">
       <stop offset="0" stop-color="hsl(30, 100%, 80%)"/>
@@ -94,6 +94,7 @@ In the situation I set up &mdash; piping a huge text file to a parser stream, th
 Not every object benefits from being hit with a hammer, and some situations benefit less than others from having a streaming pattern applied.
 
 <script src="d3.v3.js"></script>
+<script src="scrollwatcher.js"></script>
 <script src="gravitybox.js"></script>
 <script src="idmaker.js"></script>
 <script src="mover.js"></script>
