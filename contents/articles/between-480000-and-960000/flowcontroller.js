@@ -17,7 +17,11 @@ function flowController(opts) {
     yAttr: 'y',
     processSelection: function setText() {
       d3.select(this).text('<rect />');
-    }
+    },
+    useRectForCollision: true,
+    rectRecoilFactor: 0.2,
+    maxRectWidth: 30,
+    maxRectHeight: 20
   });
 
   function moveWordIntoParserBox(word, source, done) {
@@ -53,13 +57,15 @@ function flowController(opts) {
     return wordText.split('').map(renderChar);
   }
 
-  function addBlockForToken(token) {
+  function addBlock() {
     gravitybox.add([
       {
         x: +rendererBox.attr('x') + 20,
         y: +rendererBox.attr('y') + 0.6 * rendererBox.attr('height'),
+        width: 72,
+        height: 30,
         attrs: {
-          width: 30,
+          width: 72,
           height: 30,
           fill: '#666'
         }
@@ -69,7 +75,7 @@ function flowController(opts) {
   }
 
   function tokenToBlock(token) {
-    var block = addBlockForToken(token);
+    var block = addBlock();
     token.remove();
 
     return block;
