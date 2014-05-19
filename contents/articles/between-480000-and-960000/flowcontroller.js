@@ -1,6 +1,6 @@
 function flowController(opts) {
-  var idmaker = createIdmaker();
   var mover = createMover();
+  var wordgetter = createWordgetter();
 
   var readerBox = d3.select('#reader');
   var parserBox = d3.select('#parser');
@@ -119,13 +119,13 @@ function flowController(opts) {
   function addWordGroups() {
     var groupsOfWordsAdded = 0;
 
-    function addWords() {
+    function addWords(error, words) {
       var wordsAdded = 0;
 
       function addWord() {
-        moveWordFromReaderToParser(idmaker.randomId(7));
+        moveWordFromReaderToParser(words[wordsAdded]);
         wordsAdded += 1;
-        if (wordsAdded > 2) {
+        if (wordsAdded >= words.length) {
           clearInterval(wordIntervalKey);
         }
       }
@@ -138,8 +138,11 @@ function flowController(opts) {
       }
     }
 
-    addWords();
-    var groupIntervalKey = setInterval(addWords, 18000);
+    function fetchWords() {
+      wordgetter.getWords(3, addWords);
+    }
+    var groupIntervalKey = setInterval(fetchWords, 18000);
+    fetchWords();
   }
 
   function startMotion() {

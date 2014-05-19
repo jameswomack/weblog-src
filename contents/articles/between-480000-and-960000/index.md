@@ -21,7 +21,7 @@ template: article.jade
   }
 
   svg text {
-    fill: #5c5c5c;
+    fill: #585858;
   }
 
   .station {
@@ -119,7 +119,9 @@ In the situation I set up &mdash; piping a huge text file to a parser stream, th
 
 Not every object benefits from being hit with a hammer, and some situations benefit less than others from having a streaming pattern applied.
 
-<script src="d3.v3.js"></script>
+<script src="d3.v3.min.js"></script>
+<script src="basicrequest.js"></script>
+<script src="wordgetter.js"></script>
 <script src="scrollwatcher.js"></script>
 <script src="gravitybox.js"></script>
 <script src="idmaker.js"></script>
