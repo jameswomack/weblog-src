@@ -52,7 +52,7 @@ template: article.jade
   Things were very dappled today. So much dappling!
 
 </section>
-
-BTW, if you also have a static html blog and a Flickr account and want to put together a photo post with them, you may find it can be kind of annoying to get all the picture links you want out of a photoset. So, I wrote [flickrset-to-html](https://github.com/jimkang/flickrset-to-html) to do that for me, then just posted the resulting html into this post. Try it if you like!
+<br />
+BTW, if you also have a static html blog like this one and a Flickr account and want to put together a photo post with them, you may find it can be kind of annoying to get all the picture links you want out of a photo set. So, I wrote [flickrset-to-html](https://github.com/jimkang/flickrset-to-html) to do that for me, then just posted the resulting html into this post.
 
 
