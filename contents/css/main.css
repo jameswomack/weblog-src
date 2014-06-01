@@ -234,6 +234,9 @@ footer .copy, footer .copy a {
 
 .article .content img {
   display: block;
+}
+
+.article .content .fit-to-width {
   width: 100%;
 }
 

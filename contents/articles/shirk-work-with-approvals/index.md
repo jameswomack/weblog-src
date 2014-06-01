@@ -91,7 +91,9 @@ This is OK. It does make sure that many parts of every object in the array fall 
 2. Use `verify` or `verifyAsJSON` in test closures. e.g. `this.verifyAsJSON(enormousArray);`
 
 `verify` will start compare whatever data you give it with a corresponding file that should contain a snapshot of that data from the last time you ran the test. If it's the same, then the test passes. If it's not, a diff app will be launched. In my case, it's FileMerge.
-![diff image](approvalsdiff.png)
+
+<img class="fit-to-width" src="approvalsdiff.png" alt="diff screenshot" />
+
 This is your chance to review the differences. If the differences are valid (perhaps the result of a valid change in your program), you can accept them by saving over the approvals file with one that includes the changes. If they are not, you can keep the approvals file as it was, and the test will fail because it is the program that is wrong, not the approvals file.
 
 *Approvals merges reviewing test errors &mdash; something you have to do anyway &mdash; and updating tests into one process.* That's pretty smooth, I think.
