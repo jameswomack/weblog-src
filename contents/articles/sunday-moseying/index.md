@@ -23,8 +23,6 @@ template: article.jade
 
   Katt (contemplating the tree above) says this is some variant of dogwood, except with wide, flat petals. They almost form a plane. I am into that.
   
-  <br /><br />
-
   There's these lofts that you can see from the Alewife Linear Park/Minuteman Bikeway that we call "Expensive Lofts." I think the development is actually called either Tannery Brook Row or Davis Lofts. (A friend of ours told us pointed out that <a href="http://en.wikipedia.org/wiki/Tanning">tanneries</a> are actually fairly toxic, so it's like this place is actually built on some poison burial grounds. If you don't eat plants grown in the soil, you're probably fine, though.)
 
   <a class="img-container" href="https://www.flickr.com/photos/ignignokt/14317718821/in/set-72157644546343690"><img src="https://farm3.staticflickr.com/2939/14317718821_4147c41344_c.jpg" alt="Sunday moseying"></a>
@@ -52,7 +50,6 @@ template: article.jade
   Things were very dappled today. So much dappling!
 
 </section>
-<br />
 BTW, if you also have a static html blog like this one and a Flickr account and want to put together a photo post with them, you may find it can be kind of annoying to get all the picture links you want out of a photo set. So, I wrote [flickrset-to-html](https://github.com/jimkang/flickrset-to-html) to do that for me, then just posted the resulting html into this post.
 
 
