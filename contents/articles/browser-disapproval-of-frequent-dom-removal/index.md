@@ -80,6 +80,6 @@ Here is the flame graph looked like after that change:
 
 <img class="fit-to-width" src="renderCells-profile-without-remove.png" alt="Flame graph screenshot" />
 
-Now `renderCells` takes about 30 ms. Most of that time is now spent in the data join.
+Now `renderCells` takes about 30 ms. Most of that time is now spent in the data join. [Give it a try!](http://jimkang.com/reactivecell/example/)
 
 Ask your doctor if hiding instead of removing DOM elements in your app is right for you.
