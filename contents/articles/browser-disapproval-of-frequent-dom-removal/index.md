@@ -5,9 +5,11 @@ date: 2014-06-25
 template: article.jade
 ---
 
-I have been working on a [cellular automaton](https://github.com/jimkang/reactivecell). The latest thing I did with it was to make it run in the browser. (Before I was running it with Node.) That part was smooth, but when I hooked it up to some [straightforward D3 rendering code](https://github.com/jimkang/cellgridrenderer) to render each cell at each iteration, I ran into some trouble. It was sluggish once there were about 6000 cells out.
+I know that DOM manipulation is expensive, but I've found it just doesn't make a difference in a typical web app. (And of course, DOM manipulation can rarely be avoided entirely in graphically-oriented apps; it's a matter of reducing the amount of DOM-touching that happens in those cases.) Recently, I ran into a case in which it *did* matter, `removeChild` in particular.
 
 <span class="more"></span>
+
+I have been working on a [cellular automaton](https://github.com/jimkang/reactivecell). The latest thing I did with it was to make it run in the browser. (Before I was running it with Node.) That part was smooth, but when I hooked it up to some [straightforward D3 rendering code](https://github.com/jimkang/cellgridrenderer) to render each cell at each iteration, I ran into some trouble. It was sluggish once there were about 6000 cells out.
 
 D3 apps usually work around an [enter/update/exit](http://bost.ocks.org/mike/join/) loop. Each iteration, you tell D3 to "join" the data (an array of some sort) with the DOM (usually SVG) elements that represent them. D3 figures out:
 - Which data elements are not currently represented in the DOM
