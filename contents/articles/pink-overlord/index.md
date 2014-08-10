@@ -7,7 +7,7 @@ template: article.jade
 
 <section class="center-img-zone">
 
-<a class="img-container" href="https://www.flickr.com/photos/ignignokt/14347670628" title="Untitled by Jim, on Flickr"><img src="https://farm4.staticflickr.com/3849/14347670628_6a72091546_h.jpg" width="800" height="345" alt="Trunk full of junk"></a>
+<a class="img-container" href="/articles/pink-overlord/"><img src="https://farm4.staticflickr.com/3849/14347670628_6a72091546_h.jpg" width="800" height="345" alt="Trunk full of junk"></a>
 </section>
 <span class="more"></span>
 <section class="center-img-zone">

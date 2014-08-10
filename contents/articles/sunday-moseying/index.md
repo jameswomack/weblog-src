@@ -8,7 +8,7 @@ template: article.jade
 <section class="center-img-zone">
   Here's some stuff we saw while walking around North Cambridge and thereabouts Sunday morning.
 
-  <a class="img-container" href="https://www.flickr.com/photos/ignignokt/14341308253/in/set-72157644546343690"><img src="https://farm3.staticflickr.com/2903/14341308253_c75873731c_c.jpg" alt="Sunday moseying" /></a>
+  <a class="img-container" href="/articles/sunday-moseying/"><img src="https://farm3.staticflickr.com/2903/14341308253_c75873731c_c.jpg" alt="Sunday moseying" /></a>
 </section>
 <span class="more"></span>
 <section class="center-img-zone">

@@ -7,7 +7,7 @@ template: article.jade
 
 <section class="center-img-zone">
 
-<a class="img-container" class="img-container" href="https://www.flickr.com/photos/ignignokt/14869644464" title="Untitled by Jim, on Flickr"><img src="https://farm4.staticflickr.com/3884/14869644464_dadf66129e_h.jpg" width="800" height="598" alt="Untitled"></a>
+<a class="img-container" class="img-container" href="/articles/north-north-cambridge/"><img src="https://farm4.staticflickr.com/3884/14869644464_dadf66129e_h.jpg" width="800" height="598" alt="Untitled"></a>
 
 <span class="more"></span>
 

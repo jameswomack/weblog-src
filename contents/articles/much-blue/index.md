@@ -9,7 +9,7 @@ template: article.jade
 
 We went on a walk a bit after sunset this Sunday. A down-but-not-out sun can create an intensely saturated dark blue in the sky. We were awed. The phone didn't capture that exact blue, but it did get some good ones.
 
-<a class="img-container" href="https://www.flickr.com/photos/ignignokt/14590397224" title="Untitled by Jim, on Flickr"><img src="https://farm6.staticflickr.com/5510/14590397224_09e0cc4616_h.jpg" width="800" height="600" alt="Untitled"></a>
+<a class="img-container" href="/articles/much-blue/"><img src="https://farm6.staticflickr.com/5510/14590397224_09e0cc4616_h.jpg" width="800" height="600" alt="Untitled"></a>
 </section>
 <span class="more"></span>
 
