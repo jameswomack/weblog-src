@@ -21,7 +21,7 @@ ul {
 </style>
 
 
-This was very much a Life Year, one packed with Life Events. There was one root Life Event whose handlers emitted a million Life Subevents.
+This was very much a Life Year, one packed with Life Events. There was one root Life Event that triggered a million Life Subevents.
 
 Katt and I had this guy:
 <br /><br />
