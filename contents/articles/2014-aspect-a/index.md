@@ -1,7 +1,7 @@
 ---
 title: 2014, Aspect A
 author: jimkang
-date: 2015-01-12
+date: 2015-01-02
 template: article.jade
 ---
 
